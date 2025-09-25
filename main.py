@@ -4,7 +4,7 @@ api_key_file = open("/home/matthew/Code/API Keys/CoinRanking.txt")
 API_KEY = api_key_file.readline().strip()
 api_key_file.close()
 
-UUID_CODES = {'Doge':'a91GCGd_u96cF', 'Bitcoin':'Qwsogvtv82FCd', 'Ethereum':'razxDUgYGNAdQ'}
+UUID_CODES = ['a91GCGd_u96cF', 'Qwsogvtv82FCd', 'Qwsogvtv82FCd',]
 HEADER = {
     'Content-Type': 'application/json',
     'x-access-token': f'{API_KEY}'
@@ -14,14 +14,11 @@ def get_crypto_data(header,uuid_codes):
     # example: https://api.coinranking.com/v2/coins?uuids[]=razxDUgYGNAdQ&uuids[]=Qwsogvtv82FCd
     url_array_element = "{and_symbol}uuids[]={uuid}"
     url = 'https://api.coinranking.com/v2/coins?'
-    # this adds the different cryptocurriences to the api url. Because of the & needed for additional ones, the first crypto is done outside of the loop
     
-    for x in uuid_codes:
-        if x == 'Doge':
-            url = url+url_array_element.format(and_symbol="", uuid=uuid_codes[x])
-            continue
+    # this adds the different cryptocurriences to the api url. Because of the & needed for additional ones, the first crypto is done outside of the loop
+    url = url+url_array_element.format(and_symbol="", uuid=uuid_codes[0])
+    for x in range(1, len(uuid_codes)):
         url = url+url_array_element.format(and_symbol="&", uuid=uuid_codes[x])
-    print(url)
     response = requests.get(url,headers=header)
     return response
 
