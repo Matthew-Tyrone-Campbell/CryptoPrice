@@ -12,13 +12,14 @@ HEADER = {
 def get_crypto_data(header,uuid_codes):
     # The array element variable is the text required to add another uuid code into the url
     # example: https://api.coinranking.com/v2/coins?uuids[]=razxDUgYGNAdQ&uuids[]=Qwsogvtv82FCd
-    url_array_element = "{and_symbol}uuids[]={uuid}"
+    url_array_element = "uuids[]={}"
     url = 'https://api.coinranking.com/v2/coins?'
     
-    # this adds the different cryptocurriences to the api url. Because of the & needed for additional ones, the first crypto is done outside of the loop
-    url = url+url_array_element.format(and_symbol="", uuid=uuid_codes[0])
-    for x in range(1, len(uuid_codes)):
-        url = url+url_array_element.format(and_symbol="&", uuid=uuid_codes[x])
+    # this adds the different cryptocurriences to the api url. Because of the & needed in the url for additional coins, 
+    # the array_element is changed basically on second iteration
+    for code in uuid_codes:
+        url = url+url_array_element.format(code)
+        url_array_element = "&uuids[]={}"
     response = requests.get(url,headers=header)
     return response
 
