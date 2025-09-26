@@ -22,13 +22,13 @@ def get_crypto_data(header,uuid_codes):
         url_array_element = "&uuids[]={}"
     response = requests.get(url,headers=header)
     return response
-
+# gets the crypto prices and puts them in a dictionary, with the name of the coin as the key
 def get_crypto_prices(response):
     response_json = response.json()
     crypto_coins = response_json["data"]["coins"]
     prices = {}
     for crypto in crypto_coins:
-        prices[crypto["name"]] = crypto["price"]
+        prices[crypto["name"]] = round(float(crypto["price"]),3)
     return prices
 
 def menu():
