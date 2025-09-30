@@ -42,6 +42,7 @@ class crypto:
 crypto_object = crypto(API_KEY)
 #basic cammand line interface 
 def menu():
+    # if user presses enter user_response will equal false, and program will continue
     user_response = input("Press Enter to get the latest Crypto prices: ")
     if user_response == True:
         print("Program exited")
