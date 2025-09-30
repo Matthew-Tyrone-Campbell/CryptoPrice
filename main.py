@@ -47,8 +47,10 @@ def menu():
         print("Program exited")
     else:
         print('Extracting crypto prices ...')
-        prices = crypto_object.get_crypto_prices()
-        for x in prices:
-            print(f"{x}: ${prices[x]}")
-            
+        try:
+            prices = crypto_object.get_crypto_prices()
+            for x in prices:
+                print(f"{x}: ${prices[x]}")
+        except RuntimeError as error:
+            print(error)   
 menu()
