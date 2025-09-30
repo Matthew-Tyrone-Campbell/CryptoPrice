@@ -31,6 +31,8 @@ class crypto:
     # gets the crypto prices and puts them in a dictionary, with the name of the coin as the key
     def get_crypto_prices(self):
         response_json = self.get_crypto_data().json()
+        if response_json["status"] == "error":
+            raise RuntimeError(response_json["message"])
         crypto_coins = response_json["data"]["coins"]
         prices = {}
         for crypto in crypto_coins:
