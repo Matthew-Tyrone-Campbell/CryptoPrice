@@ -1,19 +1,22 @@
 import requests
 
-api_key_file = open("/home/matthew/Code/API Keys/CoinRanking.txt")
-API_KEY = api_key_file.readline().strip()
-api_key_file.close()
+
+def get_api_key():
+    api_key_file = open("/home/matthew/Code/API Keys/CoinRanking.txt")
+    API_KEY = api_key_file.readline().strip()
+    api_key_file.close()
+    return API_KEY
+
 
 #class for the crypto
 class crypto:
     def __init__(self,api_key):
         self.UUID_CODES = ['a91GCGd_u96cF', 'Qwsogvtv82FCd', 'razxDUgYGNAdQ',]
+        self.api_key = api_key
         self.HEADER = {
                     'Content-Type': 'application/json',
-                    'x-access-token': f'{API_KEY}'
+                    'x-access-token': f'{self.api_key}'
                     }
-        self.api_key = api_key
-
     def get_crypto_data(self):
         # The array element variable is the text required to add another uuid code into the url
         # example: https://api.coinranking.com/v2/coins?uuids[]=razxDUgYGNAdQ&uuids[]=Qwsogvtv82FCd
@@ -39,7 +42,7 @@ class crypto:
             prices[crypto["name"]] = round(float(crypto["price"]),3)
         return prices
     
-crypto_object = crypto(API_KEY)
+crypto_object = crypto(get_api_key())
 #basic cammand line interface 
 def menu():
     # if user presses enter user_response will equal false, and program will continue
