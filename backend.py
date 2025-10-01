@@ -40,9 +40,9 @@ class Crypto:
             prices[crypto["name"]] = round(float(crypto["price"]),3)
         return prices
     
-crypto_object = Crypto(get_api_key())
+
 #basic cammand line interface 
-def menu():
+def menu(crypto_object):
     # if user presses enter user_response will equal false, and program will continue
     user_response = input("Press Enter to get the latest Crypto prices: ")
     if user_response == True:
@@ -55,4 +55,4 @@ def menu():
                 print(f"{x}: ${prices[x]}")
         except RuntimeError as error:
             print(error)   
-menu()
+
