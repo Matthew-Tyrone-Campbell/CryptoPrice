@@ -1,15 +1,13 @@
 import requests
 
-
 def get_api_key():
     api_key_file = open("/home/matthew/Code/API Keys/CoinRanking.txt")
     API_KEY = api_key_file.readline().strip()
     api_key_file.close()
     return API_KEY
 
-
 #class for the crypto
-class crypto:
+class Crypto:
     def __init__(self,api_key):
         self.UUID_CODES = ['a91GCGd_u96cF', 'Qwsogvtv82FCd', 'razxDUgYGNAdQ',]
         self.api_key = api_key
@@ -42,7 +40,7 @@ class crypto:
             prices[crypto["name"]] = round(float(crypto["price"]),3)
         return prices
     
-crypto_object = crypto(get_api_key())
+crypto_object = Crypto(get_api_key())
 #basic cammand line interface 
 def menu():
     # if user presses enter user_response will equal false, and program will continue
