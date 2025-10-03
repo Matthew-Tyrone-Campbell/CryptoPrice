@@ -16,25 +16,27 @@ class Crypto:
                     'x-access-token': f'{self.api_key}'
                     }
         self.crypto_data = {}
+    # makes api request and puts results in self.crypto_data
     def get_crypto_data(self):
         # The array element variable is the text required to add another uuid code into the url
         # example: https://api.coinranking.com/v2/coins?uuids[]=razxDUgYGNAdQ&uuids[]=Qwsogvtv82FCd
         url_array_element = "uuids[]={}"
-        url = 'https://api.coinranking.com/v2/coins?'
+        url = 'https://api.coinranking.com/v2/oins?'
         
         # this adds the different cryptocurriences to the api url. Because of the & needed in the url for additional coins, 
         # the array_element is changed basically on second iteration
         for code in self.UUID_CODES:
             url = url+url_array_element.format(code)
             url_array_element = "&uuids[]={}"
-        # makes api request and puts it in self.crypto_data
+
+        # makes api request and puts it in self.crypto_data, also checks if the request was succesfull
         response = requests.get(url,headers=self.HEADER)
         self.crypto_data = response.json()
+        if self.crypto_data["status"] == "error":
+            raise RuntimeError(self.crypto_data["message"])
     
     # gets the crypto prices and puts them in a dictionary, with the name of the coin as the key
     def get_crypto_prices(self):
-        if self.crypto_data["status"] == "error":
-            raise RuntimeError(self.crypto_data["message"])
         crypto_coins = self.crypto_data["data"]["coins"]
         prices = {}
         for crypto in crypto_coins:
