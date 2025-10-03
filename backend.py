@@ -16,7 +16,8 @@ class Crypto:
                     'x-access-token': f'{self.api_key}'
                     }
         self.crypto_data = {}
-    # makes api request and puts results in self.crypto_data
+    # makes api request and turns it into a dictionary, also checks if api
+    # request was successfull
     def get_crypto_data(self):
         # The array element variable is the text required to add another uuid code into the url
         # example: https://api.coinranking.com/v2/coins?uuids[]=razxDUgYGNAdQ&uuids[]=Qwsogvtv82FCd
@@ -30,18 +31,23 @@ class Crypto:
             url_array_element = "&uuids[]={}"
             
         # makes api request and puts it in self.crypto_data, also checks if the request was succesfull
-        response = requests.get(url,headers=self.HEADER)
-        self.crypto_data = response.json()
-        if self.crypto_data["status"] == "error":
+        response = requests.get(url,headers=self.HEADER).json()
+        if response["status"] == "error":
             raise RuntimeError(self.crypto_data["message"])
-    
-    # gets the crypto prices and puts them in a dictionary, with the name of the coin as the key
-    def get_crypto_prices(self):
-        crypto_coins = self.crypto_data["data"]["coins"]
-        prices = {}
-        for crypto in crypto_coins:
-            prices[crypto["name"]] = round(float(crypto["price"]),3)
-        return prices
+        return response
+    # this takes the response of the api request and makes
+    # a dictionary with the data on each coin and assigns it to self.crypto_data
+    def cryptocurrencies(self, response):
+        cryptos = {}
+        for crypto in response["data"]["coins"]:
+            cryptos[crypto["name"]] = crypto
+        self.crypto_data = cryptos
+    # gets the crypto price of the specified coin
+    def get_crypto_price(self,cryptocoin):
+        return round(float(self.crypto_data[cryptocoin]['price']),2)
+    #gets crypto logo
+    def get_crypto_logo(self):
+        pass
     
 #basic cammand line interface 
 def menu(crypto_object):
@@ -52,10 +58,10 @@ def menu(crypto_object):
     else:
         print('Extracting crypto prices ...')
         try:
-            crypto_object.get_crypto_data()
-            prices = crypto_object.get_crypto_prices()
-            for x in prices:
-                print(f"{x}: ${prices[x]}")
+            crypto_object.cryptocurrencies(crypto_object.get_crypto_data())
+            for x in crypto_object.crypto_data:
+                price = crypto_object.get_crypto_price(x)
+                print(f"{x}: ${price}")
         except RuntimeError as error:
             print(error)   
 if __name__ == '__main__':
