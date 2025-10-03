@@ -21,14 +21,14 @@ class Crypto:
         # The array element variable is the text required to add another uuid code into the url
         # example: https://api.coinranking.com/v2/coins?uuids[]=razxDUgYGNAdQ&uuids[]=Qwsogvtv82FCd
         url_array_element = "uuids[]={}"
-        url = 'https://api.coinranking.com/v2/oins?'
+        url = 'https://api.coinranking.com/v2/coins?'
         
         # this adds the different cryptocurriences to the api url. Because of the & needed in the url for additional coins, 
         # the array_element is changed basically on second iteration
         for code in self.UUID_CODES:
             url = url+url_array_element.format(code)
             url_array_element = "&uuids[]={}"
-
+            
         # makes api request and puts it in self.crypto_data, also checks if the request was succesfull
         response = requests.get(url,headers=self.HEADER)
         self.crypto_data = response.json()
