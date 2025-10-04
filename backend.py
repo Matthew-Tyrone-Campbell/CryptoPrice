@@ -51,6 +51,9 @@ class Crypto:
     #returns the change of the crypto coin
     def get_crypto_change(self, cryptocurrency):
         return float(self.crypto_data[cryptocurrency]["change"])
+    #returns crypto currencies initials
+    def get_crypto_initials(self,cryptocurrency):
+        return self.crypto_data[cryptocurrency]["symbol"]
     
 #basic cammand line interface 
 def menu(crypto_object):
