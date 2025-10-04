@@ -62,9 +62,10 @@ def menu(crypto_object):
         print('Extracting crypto prices ...')
         try:
             crypto_object.cryptocurrencies(crypto_object.get_crypto_data())
-            for x in crypto_object.crypto_data:
-                price = crypto_object.get_crypto_price(x)
-                print(f"{x}: ${price}")
+            for crypto in crypto_object.crypto_data:
+                price = crypto_object.get_crypto_price(crypto)
+                change = crypto_object.get_crypto_change(crypto)
+                print(f"{crypto}: ${price}, change: {change}%")
         except RuntimeError as error:
             print(error)   
 if __name__ == '__main__':
