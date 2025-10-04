@@ -42,12 +42,15 @@ class Crypto:
         for crypto in response["data"]["coins"]:
             cryptos[crypto["name"]] = crypto
         self.crypto_data = cryptos
-    # gets the crypto price of the specified coin
+    # returns the crypto price of the specified coin
     def get_crypto_price(self,cryptocoin):
         return round(float(self.crypto_data[cryptocoin]['price']),2)
-    #gets crypto logo
-    def get_crypto_logo(self):
-        pass
+    #returns the url to the logo
+    def get_crypto_logo(self,cryptocurrency):
+        return self.crypto_data[cryptocurrency]["iconUrl"]
+    #returns the change of the crypto coin
+    def get_crypto_change(self, cryptocurrency):
+        return float(self.crypto_data[cryptocurrency]["change"])
     
 #basic cammand line interface 
 def menu(crypto_object):
