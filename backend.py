@@ -16,28 +16,26 @@ class Crypto:
                     'x-access-token': f'{self.api_key}'
                     }
         self.crypto_data = {}
-    # makes api request and turns it into a dictionary, also checks if api
-    # request was successfull
+        self.process_data(self.get_crypto_data())  
+    # makes api request and turns it into a dictionary, also checks if api request was successfull
     def get_crypto_data(self):
         # The array element variable is the text required to add another uuid code into the url
         # example: https://api.coinranking.com/v2/coins?uuids[]=razxDUgYGNAdQ&uuids[]=Qwsogvtv82FCd
         url_array_element = "uuids[]={}"
         url = 'https://api.coinranking.com/v2/coins?'
         
-        # this adds the different cryptocurriences to the api url. Because of the & needed in the url for additional coins, 
-        # the array_element is changed basically on second iteration
+        # this adds the different cryptocurriences to the api url, note the change in the '&' for every crypto
         for code in self.UUID_CODES:
             url = url+url_array_element.format(code)
             url_array_element = "&uuids[]={}"
             
-        # makes api request and puts it in self.crypto_data, also checks if the request was succesfull
+        # makes api request and returns it. also checks if the request was succesfull
         response = requests.get(url,headers=self.HEADER).json()
         if response["status"] == "error":
             raise RuntimeError(self.crypto_data["message"])
         return response
-    # this takes the response of the api request and makes
-    # a dictionary with the data on each coin and assigns it to self.crypto_data
-    def cryptocurrencies(self, response):
+    #puts all crytocurriences and their data into self,crypto_data
+    def process_data(self, response):
         cryptos = {}
         for crypto in response["data"]["coins"]:
             cryptos[crypto["name"]] = crypto
@@ -56,15 +54,15 @@ class Crypto:
         return self.crypto_data[cryptocurrency]["symbol"]
     
 #basic cammand line interface 
-def menu(crypto_object):
+def menu():
     # if user presses enter user_response will equal false, and program will continue
     user_response = input("Press Enter to get the latest Crypto prices: ")
     if user_response == True:
         print("Program exited")
     else:
         print('Extracting crypto prices ...')
+        crypto_object = Crypto(get_api_key())
         try:
-            crypto_object.cryptocurrencies(crypto_object.get_crypto_data())
             for crypto in crypto_object.crypto_data:
                 price = crypto_object.get_crypto_price(crypto)
                 change = crypto_object.get_crypto_change(crypto)
@@ -72,4 +70,4 @@ def menu(crypto_object):
         except RuntimeError as error:
             print(error)   
 if __name__ == '__main__':
-    menu(Crypto(get_api_key()))
+    menu()
