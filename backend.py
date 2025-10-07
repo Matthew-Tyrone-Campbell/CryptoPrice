@@ -42,13 +42,15 @@ class Crypto:
         self.crypto_data = cryptos
     # returns the crypto price of the specified coin
     def get_crypto_price(self,cryptocoin):
-        return round(float(self.crypto_data[cryptocoin]['price']),2)
+        price = round(float(self.crypto_data[cryptocoin]['price']),2)
+        price = str(price)
+        return price
     #returns the url to the logo
     def get_crypto_logo(self,cryptocurrency):
         return self.crypto_data[cryptocurrency]["iconUrl"]
     #returns the change of the crypto coin
     def get_crypto_change(self, cryptocurrency):
-        return float(self.crypto_data[cryptocurrency]["change"])
+        return self.crypto_data[cryptocurrency]["change"]
     #returns crypto currencies initials
     def get_crypto_initials(self,cryptocurrency):
         return self.crypto_data[cryptocurrency]["symbol"]
