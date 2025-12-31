@@ -34,7 +34,7 @@ class Crypto:
         if response["status"] == "error":
             raise RuntimeError(self.crypto_data["message"])
         return response
-    #puts all crytocurriences and their data into self,crypto_data
+    #puts all crytocurriences and their data into self.crypto_data
     def process_data(self, response):
         cryptos = {}
         for crypto in response["data"]["coins"]:
