@@ -41,8 +41,8 @@ class Crypto:
             cryptos[crypto["name"]] = crypto
         self.crypto_data = cryptos
     # returns the crypto price of the specified coin
-    def get_crypto_price(self,cryptocoin):
-        price = round(float(self.crypto_data[cryptocoin]['price']),2)
+    def get_crypto_price(self,cryptocurrency):
+        price = round(float(self.crypto_data[cryptocurrency]['price']),2)
         price = str(price)
         return price
     #returns the url to the logo
