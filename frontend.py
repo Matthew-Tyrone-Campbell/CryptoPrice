@@ -2,11 +2,6 @@ from backend import Crypto, get_api_key
 from tkinter import *
 from PIL import ImageTk, Image
 
-window = Tk()
-crypto = Crypto(get_api_key())
-title = Label(window,text="crypto")
-title.pack()
-
 class CryptoWidget(Frame):
     def __init__(self,cryptocurrency,screen,**kwargs):
         super().__init__(master=screen,**kwargs)
@@ -43,9 +38,17 @@ class CryptoWidget(Frame):
         self.change_in_price.grid(row=0,column=3)
 
 
+window = Tk()
+crypto = Crypto(get_api_key())
+
+title = Label(window,text="crypto")
+title.pack()
+crypto_widgets_frame = Frame(master=window)
+crypto_widgets_frame.pack()
+
 def add_crypto_widgets():
     crypto_widget_parameters = {
-    'screen': window,
+    'screen': crypto_widgets_frame,
     'highlightthickness':1,
     'highlightcolor':'black',
     'highlightbackground':'black',
