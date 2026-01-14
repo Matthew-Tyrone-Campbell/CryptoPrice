@@ -1,4 +1,4 @@
-#The url_crypto_query is the text required to query deferent cryptocurrencies using the api endpoint
+#The url_crypto_query is the text required to query different cryptocurrencies using the api endpoint
 
 import requests
 
@@ -17,10 +17,9 @@ class Crypto:
                     'x-access-token': f'{self.api_key}'
                     }
         self.crypto_data = {}
-        self.process_data(self.get_crypto_data())  
 
     # makes api request and turns it into a dictionary, also checks if api request was successfull
-    def get_crypto_data(self):
+    def crypto_api_request(self):
         url_crypto_query = "uuids[]={}"
         url = 'https://api.coinranking.com/v2/coins?'
         
@@ -40,8 +39,11 @@ class Crypto:
         cryptos = {}
         for crypto in response["data"]["coins"]:
             cryptos[crypto["name"]] = crypto
-        self.crypto_data = cryptos
-
+        return cryptos
+    
+    def assign_crypto_data(self):
+        self.crypto_data = self.process_data(self.crypto_api_request())
+        
     def get_crypto_price(self,cryptocurrency):
         price = round(float(self.crypto_data[cryptocurrency]['price']),2)
         price = str(price)
