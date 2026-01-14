@@ -2,8 +2,8 @@ from backend import Crypto, get_api_key
 from tkinter import *
 from PIL import Image, ImageTk
 class CryptoWidget(Frame):
-    def __init__(self,cryptocurrency,screen,**kwargs):
-        super().__init__(master=screen,**kwargs)
+    def __init__(self,cryptocurrency,master,**kwargs):
+        super().__init__(master=master,**kwargs)
         self.pack(fill=BOTH)
         self.cryptocurrency = cryptocurrency
         y_padding = 10
@@ -44,35 +44,48 @@ class CryptoWidget(Frame):
         self.price.set(f"${crypto.get_crypto_price(self.cryptocurrency)}")
         self.price_change.set(f"{crypto.get_crypto_change(self.cryptocurrency)}%")
 
+
+class CryptoWidgetsFrame(Frame):
+    def __init__(self,master):
+        super().__init__(master=master)
+        self.crypto_widget_parameters = {
+            'master': self,
+            'highlightthickness':1,
+            'highlightcolor':'black',
+            'highlightbackground':'black',
+            'width':800
+        }
+    
+    def add_crypto_widgets(self):
+        for x in crypto.crypto_data:
+            CryptoWidget(**self.crypto_widget_parameters,cryptocurrency=x)
+
+class RefreshButton(Button):
+    def __init__(self, master, crypto_widgets_frame, refresh_image):
+        super().__init__(master=master,image=refresh_image)
+        self.crypto_widgets_frame = crypto_widgets_frame
+        self.config(command=self.refresh_crypto)
+
+    def refresh_crypto(self):
+        crypto.assign_crypto_data()
+        for widget in self.crypto_widgets_frame.winfo_children():
+            widget.update_price()
+
+
+
 window = Tk()
 crypto = Crypto(get_api_key())
 crypto.assign_crypto_data()
 
-def refresh_crypto():
-    crypto.assign_crypto_data()
-    for widget in crypto_widgets_frame.winfo_children():
-        widget.update_price()
+cryptowidgetsframe = CryptoWidgetsFrame(master=window)
 
 refresh_image = Image.open('logos/restart.png')
 refresh_image = refresh_image.resize((50,50))
 refresh_image = ImageTk.PhotoImage(refresh_image)
+refresh_button = RefreshButton(master=window,crypto_widgets_frame=cryptowidgetsframe,refresh_image=refresh_image)
 
-refresh_button = Button(master=window, image=refresh_image)
-refresh_button.config(command=refresh_crypto)
 refresh_button.pack()
+cryptowidgetsframe.pack()
+cryptowidgetsframe.add_crypto_widgets()
 
-crypto_widgets_frame = Frame(master=window)
-crypto_widgets_frame.pack()
-def add_crypto_widgets():
-    crypto_widget_parameters = {
-    'screen': crypto_widgets_frame,
-    'highlightthickness':1,
-    'highlightcolor':'black',
-    'highlightbackground':'black',
-    'width':800
-}
-    for x in crypto.crypto_data:
-        CryptoWidget(**crypto_widget_parameters,cryptocurrency=x)
-
-add_crypto_widgets()
 window.mainloop()
