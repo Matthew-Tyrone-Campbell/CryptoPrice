@@ -10,7 +10,7 @@ def get_api_key():
 
 class Crypto:
     def __init__(self,api_key):
-        self.UUID_CODES = ['a91GCGd_u96cF', 'Qwsogvtv82FCd', 'razxDUgYGNAdQ']
+        self.UUID_CODES = ['a91GCGd_u96cF', 'Qwsogvtv82FCd', 'razxDUgYGNAdQ', 'HIVsRcGKkPFtW']
         self.api_key = api_key
         self.HEADER = {
                     'Content-Type': 'application/json',

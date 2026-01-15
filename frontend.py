@@ -25,11 +25,15 @@ class CryptoWidget(Frame):
         self.update_price()
 
         #crypto image
-        self.logo_image = Image.open(f"logos/{self.cryptocurrency.lower()}.png")
-        self.logo_image = self.logo_image.resize(resize_dimensions)
-        self.logo_image = ImageTk.PhotoImage(self.logo_image)
-        self.logo_label = Label(master=self,image=self.logo_image,padx=x_padding,pady=y_padding,font=(font_family,font_size))
-        self.logo_label.grid(row= 0, column= 0)
+        try:
+            self.logo_image = Image.open(f"logos/{self.cryptocurrency.lower()}.png")
+            self.logo_image = self.logo_image.resize(resize_dimensions)
+            self.logo_image = ImageTk.PhotoImage(self.logo_image)
+            self.logo_label = Label(master=self,image=self.logo_image,padx=x_padding,pady=y_padding,font=(font_family,font_size))
+            self.logo_label.grid(row= 0, column= 0)
+        
+        except FileNotFoundError:
+            pass
         
         #crypto name
         self.crypto_name_frame = Frame(self,padx=x_padding)
