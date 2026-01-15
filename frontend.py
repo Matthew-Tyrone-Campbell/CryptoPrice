@@ -1,9 +1,17 @@
 from backend import Crypto, get_api_key
 from tkinter import *
 from PIL import Image, ImageTk
+
 class CryptoWidget(Frame):
-    def __init__(self,cryptocurrency,master,**kwargs):
-        super().__init__(master=master,**kwargs)
+    parameters = {
+    'highlightthickness':1,
+    'highlightcolor':'black',
+    'highlightbackground':'black',
+    'width':800
+    }
+    
+    def __init__(self,cryptocurrency,master):
+        super().__init__(master=master,**CryptoWidget.parameters)
         self.pack(fill=BOTH)
         self.cryptocurrency = cryptocurrency
         y_padding = 10
@@ -44,21 +52,13 @@ class CryptoWidget(Frame):
         self.price.set(f"${crypto.get_crypto_price(self.cryptocurrency)}")
         self.price_change.set(f"{crypto.get_crypto_change(self.cryptocurrency)}%")
 
-
 class CryptoWidgetsFrame(Frame):
     def __init__(self,master):
         super().__init__(master=master)
-        self.crypto_widget_parameters = {
-            'master': self,
-            'highlightthickness':1,
-            'highlightcolor':'black',
-            'highlightbackground':'black',
-            'width':800
-        }
-    
+
     def add_crypto_widgets(self):
         for x in crypto.crypto_data:
-            CryptoWidget(**self.crypto_widget_parameters,cryptocurrency=x)
+            CryptoWidget(master=self,cryptocurrency=x)
 
 class RefreshButton(Button):
     def __init__(self, master, crypto_widgets_frame, refresh_image):
@@ -70,8 +70,6 @@ class RefreshButton(Button):
         crypto.assign_crypto_data()
         for widget in self.crypto_widgets_frame.winfo_children():
             widget.update_price()
-
-
 
 window = Tk()
 crypto = Crypto(get_api_key())

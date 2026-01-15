@@ -10,7 +10,7 @@ def get_api_key():
 
 class Crypto:
     def __init__(self,api_key):
-        self.UUID_CODES = ['a91GCGd_u96cF', 'Qwsogvtv82FCd', 'razxDUgYGNAdQ',]
+        self.UUID_CODES = ['a91GCGd_u96cF', 'Qwsogvtv82FCd', 'razxDUgYGNAdQ']
         self.api_key = api_key
         self.HEADER = {
                     'Content-Type': 'application/json',
@@ -67,6 +67,7 @@ def menu():
     else:
         print('Extracting crypto prices ...')
         crypto_object = Crypto(get_api_key())
+        crypto_object.assign_crypto_data()
         try:
             for crypto in crypto_object.crypto_data:
                 price = crypto_object.get_crypto_price(crypto)
