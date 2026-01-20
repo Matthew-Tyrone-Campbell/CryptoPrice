@@ -3,7 +3,7 @@
 import requests
 
 def get_api_key():
-    api_key_file = open("/home/matthew/Code/API Keys/CoinRanking.txt")
+    api_key_file = open("/home/matthew/Code/Matthew/API Keys/CoinRanking.txt")
     API_KEY = api_key_file.readline().strip()
     api_key_file.close()
     return API_KEY
